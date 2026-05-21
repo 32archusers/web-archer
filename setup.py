@@ -12,7 +12,8 @@ setup(
     install_requires=[
         "requests>=2.31.0",
         "beautifulsoup4>=4.12.0",
-        "duckduckgo_search>=6.0.0",
+        "duckduckgo_search>=6.1.7",
+        "curl_cffi>=0.7.0" ,
     ],
     entry_points={
         "console_scripts": [
