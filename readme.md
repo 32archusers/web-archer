@@ -1,8 +1,8 @@
-# Web Archer v2.0.0
+# Web Archer v1.0.0
 
 An open-source, highly efficient command-line toolset built for Arch Linux. It automates web discovery and extracts clean, plain-text datasets for LLMs and AI training. 
 
-Version 2.0 features **anti-bot bypassing** via browser TLS fingerprinting, **CLI arguments**, and a recursive **deep-scraping crawler**.
+Version 1.0 features **anti-bot bypassing** via browser TLS fingerprinting, **CLI arguments**, and a recursive **deep-scraping crawler**.
 
 ---
 
