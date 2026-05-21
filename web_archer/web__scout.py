@@ -7,7 +7,7 @@ from duckduckgo_search import DDGS
 URL_FILE = "web-list.txt"
 DB_NAME = "scraper_queue.db"
 
-DOMAIN_BLACKLIST = {"amazon.com", "facebook.com", "instagram.com", "pinterest.com", "twitter.com", "wikipedia.org", "youtube.com"}
+DOMAIN_BLACKLIST = {"amazon.com", "facebook.com", "instagram.com", "pinterest.com", "twitter.com", "youtube.com"}
 TITLE_BLACKLIST = ["cart", "checkout", "login", "product", "shop", "sign up", "signin", "store"]
 
 def get_already_known_urls():
@@ -18,7 +18,7 @@ def get_already_known_urls():
             cursor = conn.cursor()
             cursor.execute("SELECT url FROM web_queue")
             for row in cursor.fetchall():
-                known.add(row[0])  # Extract base string from index array safely
+                known.add(row[0])
             conn.close()
         except Exception:
             pass
@@ -42,7 +42,7 @@ def scout_websites():
             limit = 10
 
     if not query:
-        print("❌ Error: Search query cannot be empty.")
+        print("Error: Search query cannot be empty.")
         return
 
     print(f"\nSearching DuckDuckGo for: '{query}' (Limit: {limit})...")
@@ -56,21 +56,23 @@ def scout_websites():
                     existing_urls.add(line)
 
     new_urls = []
-    try:
-        with DDGS() as ddgs:
-            # BUG FIX: Replaced parameter mapping with keywords=query to prevent execution termination
-            results = ddgs.text(keywords=query, max_results=limit)
-            if results:
-                for r in results:
-                    url = r.get('href')
-                    title = r.get('title', '').lower()
 
-                    if url:
-                        domain = urlparse(url).netloc.lower().replace("www.", "")
-                        if domain in DOMAIN_BLACKLIST or any(kw in title for kw in TITLE_BLACKLIST):
-                            continue
-                        if url not in existing_urls:
-                            new_urls.append(url)
+    # Instantiate the search object cleanly outside a context manager
+    ddgs = DDGS()
+    try:
+        # Pull list payload using explicit keyword syntax required by modern versions
+        results = ddgs.text(keywords=query, max_results=limit)
+        if results:
+            for r in results:
+                url = r.get('href')
+                title = r.get('title', '').lower()
+
+                if url:
+                    domain = urlparse(url).netloc.lower().replace("www.", "")
+                    if domain in DOMAIN_BLACKLIST or any(kw in title for kw in TITLE_BLACKLIST):
+                        continue
+                    if url not in existing_urls:
+                        new_urls.append(url)
     except Exception as e:
         print(f" Error linking to search engine: {e}")
         return

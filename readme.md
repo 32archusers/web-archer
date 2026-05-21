@@ -2,7 +2,7 @@
 
 An open-source, highly efficient command-line toolset built for Arch Linux. It automates web discovery and extracts clean, plain-text datasets for LLMs and AI training. 
 
-Version 2.0 features **anti-bot bypassing** via browser TLS fingerprinting, custom **CLI arguments**, and a recursive **deep-scraping crawler**.
+Version 1.3 features **anti-bot bypassing** via browser TLS fingerprinting, custom **CLI arguments**, and a recursive **deep-scraping crawler**.
 
 ---
 

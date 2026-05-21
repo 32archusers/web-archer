@@ -109,7 +109,7 @@ def main():
     parser.add_argument("-d", "--deep", action="store_true", help="Enable Deep Crawling of internal links")
     args = parser.parse_args()
 
-    print("\n --- INITIALIZING WEB ARCHER: PARALLEL TEXT SCRAPER v1.0 --- ")
+    print("\n --- INITIALIZING WEB ARCHER: PARALLEL TEXT SCRAPER v1.4 --- ")
     print("Loading database, checking configuration files, and initializing threads...")
     time.sleep(2)
 
