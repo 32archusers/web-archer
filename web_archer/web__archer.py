@@ -66,6 +66,15 @@ def add_discovered_url(url):
     finally:
         conn.close()
 
+def reset_database():
+    """Clear the scraper queue database."""
+    if os.path.exists(DB_NAME):
+        try:
+            os.remove(DB_NAME)
+            print("[RESET] Database cleared successfully.")
+        except OSError as e:
+            print(f"[ERROR] Failed to reset database: {e}")
+
 def scrape_worker(site_data, crawl_deep):
     url_id, url = site_data
     try:
@@ -107,11 +116,15 @@ def main():
     parser = argparse.ArgumentParser(description="Web Archer: Multi-Threaded Scraper & Crawler")
     parser.add_argument("-t", "--threads", type=int, default=5, help="Number of concurrent execution threads")
     parser.add_argument("-d", "--deep", action="store_true", help="Enable Deep Crawling of internal links")
+    parser.add_argument("-r", "--reset", action="store_true", help="Reset the database before scraping")
     args = parser.parse_args()
 
     print("\n --- INITIALIZING WEB ARCHER: PARALLEL TEXT SCRAPER v1.2.1 --- ")
     print("Loading database, checking configuration files, and initializing threads...")
     time.sleep(2)
+
+    if args.reset:
+        reset_database()
 
     init_db()
     pending_tasks = get_all_pending()

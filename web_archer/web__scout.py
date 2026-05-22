@@ -3,7 +3,11 @@ import sqlite3
 from pathlib import Path
 from urllib.parse import urlparse
 
-from duckduckgo_search import DDGS
+try:
+    from duckduckgo_search import DDGS
+except ImportError:
+    print("[ERROR] duckduckgo_search not installed. Install with: pip install duckduckgo-search")
+    exit(1)
 
 URL_FILE = Path("web-list.txt")
 DB_NAME = Path("scraper_queue.db")
@@ -12,10 +16,23 @@ MAX_LIMIT = 50
 DEFAULT_LIMIT = 10
 
 DOMAIN_BLACKLIST = {
+    "wikipedia.org",
+    "ebay.com",
+    "amazon.com",
+    "facebook.com",
+    "instagram.com",
+    "twitter.com",
+    "reddit.com",
 }
 
 TITLE_BLACKLIST = {
-    "
+    "login",
+    "sign up",
+    "subscribe",
+    "buy now",
+    "cart",
+    "checkout",
+    "price",
 }
 
 
