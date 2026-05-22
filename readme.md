@@ -1,7 +1,8 @@
 #### Disclaimer:
 This tool is developed and provided strictly for **educational**, research, and personal data-collection purposes (such as assembling custom datasets for local AI/LLM training).
 ​When utilizing Web Archer, *you* are solely responsible for ensuring that your scraping and crawling activities comply
- **with:**
+ **With:**
+
 ​The Terms of Service (ToS) of any target websites.
 ​The rules specified in the host's [robots.txt] file.
 ​Applicable local and international data privacy and security laws (including, but not limited to, GDPR and CCPA regarding personal data collection).
