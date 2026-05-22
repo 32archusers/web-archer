@@ -58,10 +58,10 @@ def scout_websites():
     new_urls = []
 
     # Instantiate the search object cleanly outside a context manager
-    ddgs = DDGS()
+    with ddgs = DDGS()
     try:
         # Pull list payload using explicit keyword syntax required by modern versions
-        results = ddgs.text(keywords=query, max_results=limit)
+        results = [r for r in ddgs.text(keywords=query, max_results=limit)]
         if results:
             for r in results:
                 url = r.get('href')
