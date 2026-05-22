@@ -15,25 +15,9 @@ DB_NAME = Path("scraper_queue.db")
 MAX_LIMIT = 50
 DEFAULT_LIMIT = 10
 
-DOMAIN_BLACKLIST = {
-    "wikipedia.org",
-    "ebay.com",
-    "amazon.com",
-    "facebook.com",
-    "instagram.com",
-    "twitter.com",
-    "reddit.com",
-}
+DOMAIN_BLACKLIST = set()
 
-TITLE_BLACKLIST = {
-    "login",
-    "sign up",
-    "subscribe",
-    "buy now",
-    "cart",
-    "checkout",
-    "price",
-}
+TITLE_BLACKLIST = set()
 
 
 def normalize_url(url: str) -> str:
