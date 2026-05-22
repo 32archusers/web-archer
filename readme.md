@@ -1,3 +1,12 @@
+#### Disclaimer:
+This tool is developed and provided strictly for **educational**, research, and personal data-collection purposes (such as assembling custom datasets for local AI/LLM training).
+​When utilizing Web Archer, *you* are solely responsible for ensuring that your scraping and crawling activities comply ***with:***
+​The Terms of Service (ToS) of any target websites.
+​The rules specified in the host's [robots.txt] file.
+​Applicable local and international data privacy and security laws (including, but not limited to, GDPR and CCPA regarding personal data collection).
+​The developer assumes no liability and is not responsible for any misuse, potential IP bans, *rate-limiting* or **legal consequences** resulting from the execution of this software. Use responsibly and ethically.
+
+
 ## Version 1.4 is a major stability
 and reliability release for the Web Archer ecosystem. This update transitions both **web__scout** and **web__archer** from experimental scripts into a robust, production-ready, fault-tolerant dataset pipeline. The focus of this release was completely eliminating database locks, handling edge-case network failures gracefully, and fixing broken project entry points.
 
