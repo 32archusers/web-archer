@@ -1,4 +1,7 @@
-## Web Archer v1.3
+## Version 1.4 is a major stability
+and reliability release for the Web Archer ecosystem. This update transitions both **web__scout** and **web__archer** from experimental scripts into a robust, production-ready, fault-tolerant dataset pipeline. The focus of this release was completely eliminating database locks, handling edge-case network failures gracefully, and fixing broken project entry points.
+
+## Web Archer v1.4
 
 An open-source, highly efficient command-line toolset built for Arch Linux. It automates web discovery and extracts clean, plain-text datasets for LLMs and AI training. 
 A bug-fixed, multi-threaded text scraper and website crawling tool.
