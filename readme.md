@@ -9,8 +9,8 @@ This tool is developed and provided strictly for **educational**, research, and 
 ​The developer assumes no liability and is not responsible for any misuse, potential IP bans, *rate-limiting* or **legal consequences** resulting from the execution of this software. Use responsibly and ethically.
 
 
-## Version 1.4 is a major stability
-and reliability release for the Web Archer ecosystem. This update transitions both **web__scout** and **web__archer** from experimental scripts into a robust, production-ready, fault-tolerant dataset pipeline. The focus of this release was completely eliminating database locks, handling edge-case network failures gracefully, and fixing broken project entry points.
+## Version 1.4
+ 1.4 is a major stability and reliability release for the Web Archer ecosystem. This update transitions both **web__scout** and **web__archer** from experimental scripts into a robust, production-ready, fault-tolerant dataset pipeline. The focus of this release was completely eliminating database locks, handling edge-case network failures gracefully, and fixing broken project entry points.
 
 ## Web Archer v1.4
 
