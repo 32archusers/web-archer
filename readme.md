@@ -1,4 +1,4 @@
-## Web Archer v1.2.1
+## Web Archer v1.3
 
 An open-source, highly efficient command-line toolset built for Arch Linux. It automates web discovery and extracts clean, plain-text datasets for LLMs and AI training. 
 A bug-fixed, multi-threaded text scraper and website crawling tool.
@@ -8,7 +8,7 @@ Version 1.2.1 features **anti-bot bypassing** via browser TLS fingerprinting, cu
 
 ##  Installation
 Install via aur with
-"yay -S web-archer-bin
+"yay -S web-archer-bin"
 ## If not installing with yay then global install
 ### Global Installation (Bypassing Virtual Environments)
 To register the tools globally on your Arch machine so you can run them from any directory:
