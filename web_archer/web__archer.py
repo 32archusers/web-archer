@@ -3,6 +3,7 @@ import sys
 import time
 import sqlite3
 import argparse
+import threading
 from urllib.parse import urlparse, urljoin
 from bs4 import BeautifulSoup
 from concurrent.futures import ThreadPoolExecutor
@@ -11,6 +12,9 @@ from curl_cffi import requests
 DB_NAME = "scraper_queue.db"
 OUTPUT_DIR = "scraped_text"
 URL_FILE = "web-list.txt"
+
+# Global lock for thread-safe database writes
+db_lock = threading.Lock()
 
 def init_db():
     os.makedirs(OUTPUT_DIR, exist_ok=True)
@@ -41,39 +45,43 @@ def init_db():
     conn.close()
 
 def get_all_pending():
-    conn = sqlite3.connect(DB_NAME, timeout=30.0)
-    cursor = conn.cursor()
-    cursor.execute("SELECT id, url FROM web_queue WHERE status = 'pending'")
-    rows = cursor.fetchall()
-    conn.close()
-    return rows
+    with db_lock:
+        conn = sqlite3.connect(DB_NAME, timeout=30.0)
+        cursor = conn.cursor()
+        cursor.execute("SELECT id, url FROM web_queue WHERE status = 'pending'")
+        rows = cursor.fetchall()
+        conn.close()
+        return rows
 
 def mark_as_done(url_id):
-    conn = sqlite3.connect(DB_NAME, timeout=30.0)
-    cursor = conn.cursor()
-    cursor.execute("UPDATE web_queue SET status = 'done' WHERE id = ?", (url_id,))
-    conn.commit()
-    conn.close()
+    with db_lock:
+        conn = sqlite3.connect(DB_NAME, timeout=30.0)
+        cursor = conn.cursor()
+        cursor.execute("UPDATE web_queue SET status = 'done' WHERE id = ?", (url_id,))
+        conn.commit()
+        conn.close()
 
 def add_discovered_url(url):
-    conn = sqlite3.connect(DB_NAME, timeout=30.0)
-    cursor = conn.cursor()
-    try:
-        cursor.execute("INSERT OR IGNORE INTO web_queue (url) VALUES (?)", (url,))
-        conn.commit()
-    except sqlite3.Error:
-        pass
-    finally:
-        conn.close()
+    with db_lock:
+        conn = sqlite3.connect(DB_NAME, timeout=30.0)
+        cursor = conn.cursor()
+        try:
+            cursor.execute("INSERT OR IGNORE INTO web_queue (url) VALUES (?)", (url,))
+            conn.commit()
+        except sqlite3.Error as e:
+            print(f"[DB ERROR] Failed to add URL {url}: {e}")
+        finally:
+            conn.close()
 
 def reset_database():
     """Clear the scraper queue database."""
-    if os.path.exists(DB_NAME):
-        try:
-            os.remove(DB_NAME)
-            print("[RESET] Database cleared successfully.")
-        except OSError as e:
-            print(f"[ERROR] Failed to reset database: {e}")
+    with db_lock:
+        if os.path.exists(DB_NAME):
+            try:
+                os.remove(DB_NAME)
+                print("[RESET] Database cleared successfully.")
+            except OSError as e:
+                print(f"[ERROR] Failed to reset database: {e}")
 
 def scrape_worker(site_data, crawl_deep):
     url_id, url = site_data
