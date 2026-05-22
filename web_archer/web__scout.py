@@ -11,12 +11,9 @@ DB_NAME = Path("scraper_queue.db")
 MAX_LIMIT = 50
 DEFAULT_LIMIT = 10
 
-DOMAIN_BLACKLIST = {
-}
-
-TITLE_BLACKLIST = {
-    "
-}
+# FIX: Cleaned up empty set definitions and fixed malformed dangling quotes
+DOMAIN_BLACKLIST = set()
+TITLE_BLACKLIST = set()
 
 
 def normalize_url(url: str) -> str:
@@ -56,7 +53,7 @@ def load_existing_urls() -> set[str]:
                     )
 
         except sqlite3.Error as e:
-            print(f"[DB WARNING] {e}")
+            print(f"[DB WARNING] Could not read queue database: {e}")
 
     if URL_FILE.exists():
         try:
@@ -67,7 +64,7 @@ def load_existing_urls() -> set[str]:
                     if line.strip() and not line.startswith("#")
                 )
         except OSError as e:
-            print(f"[FILE WARNING] {e}")
+            print(f"[FILE WARNING] Could not read target text file: {e}")
 
     return known_urls
 
@@ -79,7 +76,6 @@ def is_blacklisted(url: str, title: str) -> bool:
         return True
 
     title = title.lower()
-
     return any(keyword in title for keyword in TITLE_BLACKLIST)
 
 
@@ -89,7 +85,12 @@ def search_duckduckgo(query: str, limit: int) -> list[str]:
 
     try:
         with DDGS() as ddgs:
+            # Execute search through the DDGS API wrapper
             results = ddgs.text(query, max_results=limit)
+
+            if not results:
+                print("No results returned from DuckDuckGo.")
+                return new_urls
 
             for result in results:
                 url = result.get("href")
@@ -110,7 +111,7 @@ def search_duckduckgo(query: str, limit: int) -> list[str]:
                 new_urls.append(normalized)
 
     except Exception as e:
-        print(f"[SEARCH ERROR] {e}")
+        print(f"[SEARCH ERROR] DuckDuckGo query processing failed: {type(e).__name__}: {e}")
 
     return new_urls
 
@@ -135,7 +136,7 @@ def save_urls(urls: list[str]) -> None:
         print(f"\nSaved {len(urls)} URLs to '{URL_FILE}'")
 
     except OSError as e:
-        print(f"[FILE ERROR] {e}")
+        print(f"[FILE ERROR] Failed to update target file: {e}")
 
 
 def parse_args():
@@ -193,3 +194,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
